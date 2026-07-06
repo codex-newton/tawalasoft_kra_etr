@@ -35,10 +35,6 @@ doc_events = {
     },
 }
 
-jinja = {
-    "methods": ["tawalasoft_kra_etr.api.qr.qr_data_uri"],
-}
-
 after_install = "tawalasoft_kra_etr.setup.install.setup_fields"
 after_migrate = "tawalasoft_kra_etr.setup.install.setup_fields"
 

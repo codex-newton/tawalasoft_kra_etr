@@ -1,41 +1,36 @@
-### Tawalasoft Kra Etr
+# tawalasoft_kra_etr
 
-ERPNext integration with KRA TIMS ETR middleware
+ERPNext integration with the KRA TIMS ETR middleware.
 
-### Installation
+Signs Sales Invoices (and credit notes) on submit. Sync soft-fail: invoice
+submits regardless; failures set `custom_etr_error` and expose a Retry button.
 
-You can install this app using the [bench](https://github.com/frappe/bench) CLI:
-
-```bash
-cd $PATH_TO_YOUR_BENCH
-bench get-app $URL_OF_THIS_REPO --branch develop
-bench install-app tawalasoft_kra_etr
-```
-
-### Contributing
-
-This app uses `pre-commit` for code formatting and linting. Please [install pre-commit](https://pre-commit.com/#installation) and enable it for this repository:
+## Install
 
 ```bash
-cd apps/tawalasoft_kra_etr
-pre-commit install
+bench get-app <repo-url> tawalasoft_kra_etr
+bench --site <site> install-app tawalasoft_kra_etr
+bench --site <site> migrate
+bench restart
 ```
 
-Pre-commit is configured to use the following tools for checking and formatting your code:
+## Configure
 
-- ruff
-- eslint
-- prettier
-- pyupgrade
+Open **KRA ETR Settings**:
 
-### CI
+- Middleware URL: `http://<host>:8084`
+- Basic Auth Token: value after `Basic ` in the Authorization header
+- Price Mode: `Exclusive` or `Inclusive`
+- Enable when ready
 
-This app can use GitHub Actions for CI. The following workflows are configured:
+Seller PIN comes from `Company.tax_id`. Customer PIN comes from `Customer.tax_id`.
 
-- CI: Installs this app and runs unit tests on every push to `develop` branch.
-- Linters: Runs [Frappe Semgrep Rules](https://github.com/frappe/semgrep-rules) and [pip-audit](https://pypi.org/project/pip-audit/) on every pull request.
+## Print format QR
 
-
-### License
-
-mit
+```jinja
+{% if doc.custom_etr_signed %}
+  <img src="{{ qr_data_uri(doc.custom_etr_verify_url) }}" style="width:80px;height:80px;" />
+  <div>CU: {{ doc.custom_cu_serial_number }}</div>
+  <div>Inv#: {{ doc.custom_cu_invoice_number }}</div>
+{% endif %}
+```
