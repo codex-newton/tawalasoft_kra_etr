@@ -1,0 +1,63 @@
+{
+ "actions": [],
+ "creation": "2026-07-06 00:00:00",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "middleware_url",
+  "auth_token",
+  "default_price_mode"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "middleware_url",
+   "fieldtype": "Data",
+   "label": "Middleware URL",
+   "reqd": 1
+  },
+  {
+   "fieldname": "auth_token",
+   "fieldtype": "Password",
+   "label": "Basic Auth Token",
+   "reqd": 1
+  },
+  {
+   "default": "Exclusive",
+   "fieldname": "default_price_mode",
+   "fieldtype": "Select",
+   "label": "Price Mode",
+   "options": "Exclusive\nInclusive",
+   "reqd": 1
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-07-06 00:00:00",
+ "modified_by": "Administrator",
+ "module": "Tawalasoft Kra Etr",
+ "name": "KRA ETR Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

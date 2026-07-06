@@ -24,6 +24,25 @@ app_license = "mit"
 # Includes in <head>
 # ------------------
 
+doctype_js = {
+    "Sales Invoice": "public/js/sales_invoice.js",
+}
+
+doc_events = {
+    "Sales Invoice": {
+        "on_submit": "tawalasoft_kra_etr.api.sign.on_sales_invoice_submit",
+        "before_cancel": "tawalasoft_kra_etr.api.sign.block_cancel_if_signed",
+    },
+}
+
+jinja = {
+    "methods": ["tawalasoft_kra_etr.api.qr.qr_data_uri"],
+}
+
+after_install = "tawalasoft_kra_etr.setup.install.setup_fields"
+after_migrate = "tawalasoft_kra_etr.setup.install.setup_fields"
+
+
 # include js, css files in header of desk.html
 # app_include_css = "/assets/tawalasoft_kra_etr/css/tawalasoft_kra_etr.css"
 # app_include_js = "/assets/tawalasoft_kra_etr/js/tawalasoft_kra_etr.js"
