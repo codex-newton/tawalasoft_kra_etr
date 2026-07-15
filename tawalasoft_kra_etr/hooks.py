@@ -32,8 +32,10 @@ doc_events = {
     "Sales Invoice": {
         "on_submit": "tawalasoft_kra_etr.api.sign.on_sales_invoice_submit",
         "before_cancel": "tawalasoft_kra_etr.api.sign.block_cancel_if_signed",
+        "validate": "tawalasoft_kra_etr.api.sign.clear_etr_on_return",
     },
 }
+
 
 after_install = "tawalasoft_kra_etr.setup.install.setup_fields"
 after_migrate = "tawalasoft_kra_etr.setup.install.setup_fields"

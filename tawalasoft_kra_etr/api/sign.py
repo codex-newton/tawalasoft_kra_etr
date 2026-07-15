@@ -6,6 +6,16 @@ from tawalasoft_kra_etr.api.client import KRAETRClient
 from tawalasoft_kra_etr.api.payload import build_sales_invoice_payload
 
 
+def clear_etr_on_return(doc, method=None):
+    if doc.is_return and doc.get("custom_etr_signed"):
+        doc.custom_etr_signed = 0
+        doc.custom_cu_serial_number = ""
+        doc.custom_cu_invoice_number = ""
+        doc.custom_etr_verify_url = ""
+        doc.custom_etr_sign_datetime = None
+        doc.custom_etr_error = ""
+
+
 def on_sales_invoice_submit(doc, method=None):
     settings = frappe.get_single("KRA ETR Settings")
     if not settings.enabled or doc.get("custom_etr_signed"):
@@ -38,9 +48,26 @@ def retry_sign(sales_invoice):
 
 def _sign(doc, settings):
     price_mode = 1 if settings.default_price_mode == "Inclusive" else 2
-    slug = "credit-note" if doc.is_return else "invoice"
+
+    if doc.is_return:
+        slug = "credit-note"
+        if not doc.return_against:
+            frappe.throw(_("Credit note must have a Return Against invoice."))
+        original_cu = frappe.db.get_value(
+            "Sales Invoice", doc.return_against, "custom_cu_invoice_number"
+        )
+        if not original_cu:
+            frappe.throw(
+                _("Original invoice {0} has not been signed by KRA ETR. "
+                  "Sign the original invoice first before submitting this credit note."
+                ).format(doc.return_against)
+            )
+    else:
+        slug = "invoice"
+
     payload = build_sales_invoice_payload(doc, price_mode)
     response = KRAETRClient().sign(slug, price_mode, payload)
+
     doc.db_set({
         "custom_etr_signed": 1,
         "custom_cu_serial_number": response.get("cu_serial_number", ""),

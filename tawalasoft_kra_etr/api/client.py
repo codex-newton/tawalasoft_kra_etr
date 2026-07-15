@@ -20,5 +20,10 @@ class KRAETRClient:
             "Authorization": f"Basic {self.auth_token}",
         }
         r = requests.post(url, headers=headers, json=payload, timeout=30)
-        r.raise_for_status()
+        if not r.ok:
+            try:
+                body = r.json()
+            except Exception:
+                body = r.text
+            raise Exception(f"KRA ETR {r.status_code}: {body}")
         return r.json()
