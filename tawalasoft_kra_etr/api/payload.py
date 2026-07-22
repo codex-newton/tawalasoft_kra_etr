@@ -5,7 +5,7 @@ from frappe.utils import flt, getdate
 def build_sales_invoice_payload(doc, price_mode):
     """price_mode: 1 = Inclusive, 2 = Exclusive"""
     seller_pin = frappe.db.get_value("Company", doc.company, "tax_id") or ""
-    customer_pin = frappe.db.get_value("Customer", doc.customer, "tax_id") or ""
+    customer_pin = frappe.db.get_value("Customer", doc.customer, "tax_id") or doc.get("custom_kra_pin") or ""
 
     rel_doc_number = ""
     if doc.is_return and doc.return_against:
