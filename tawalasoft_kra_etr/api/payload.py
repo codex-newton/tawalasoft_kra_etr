@@ -4,7 +4,7 @@ import frappe
 from frappe.utils import flt, getdate
 
 
-# KRA PIN format: one letter + 9 digits + one letter, e.g. P051515648L
+# KRA PIN format: one letter + 9 digits + one letter, e.g. P05*****648L
 KRA_PIN_RE = re.compile(r"^[A-Z]\d{9}[A-Z]$")
 
 # Manual walk-in PIN override on Sales Invoice (custom field, label
