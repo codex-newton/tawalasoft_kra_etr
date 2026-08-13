@@ -3,6 +3,15 @@ from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 
 FIELDS = {
     "Sales Invoice": [
+        # --- Walk-in buyer details (user input, set before submit) ---
+        {"fieldname": "custom_kra_pin", "label": "Walk in Customer KRA Pin",
+         "fieldtype": "Data", "insert_after": "tax_id",
+         "description": "Overrides the Customer PIN. Format: one letter, 9 digits, one letter."},
+        {"fieldname": "custom_walk_in_name", "label": "Walk in Customer Name",
+         "fieldtype": "Data", "insert_after": "custom_kra_pin",
+         "description": "For your records only. Not transmitted to KRA."},
+
+        # --- ETR results (written by the integration, read-only) ---
         {"fieldname": "kra_etr_section", "label": "KRA ETR", "fieldtype": "Section Break",
          "insert_after": "amended_from", "collapsible": 1},
         {"fieldname": "custom_etr_signed", "label": "ETR Signed", "fieldtype": "Check",
